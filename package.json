@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/wangpf19920217/technode/issues"
   },
-  "homepage": "https://github.com/wangpf19920217/technode#readme"
+  "homepage": "https://github.com/wangpf19920217/technode#readme",
+  "dependencies": {
+    "angular": "^1.5.5",
+    "bootstrap": "^3.3.6",
+    "express": "^4.13.4",
+    "socket.io": "^1.4.6"
+  }
 }
