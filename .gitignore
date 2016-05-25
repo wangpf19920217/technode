@@ -45,3 +45,15 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+*.md
+*.npmignore
+node_modules/bower/lib/node_modules/balanced-match/index.js
+node_modules/bower/lib/node_modules/async/package.json
+*.js
+*.json
+*.markdown
+*.png
+*.txt
+*.in
+*.tpl
+*.xml
