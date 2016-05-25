@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>TechNode</title>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+      var socket = io.connect('http://localhost:3000/')
+      socket.on('connected', function () {
+        alert('connected to TechNode!')
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "technode",
+  "version": "1.0.0",
+  "description": "angular + bootstrp做的聊天室",
+  "main": "app",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wangpf19920217/technode.git"
+  },
+  "author": "node实战",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wangpf19920217/technode/issues"
+  },
+  "homepage": "https://github.com/wangpf19920217/technode#readme"
+}
