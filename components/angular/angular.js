@@ -59,12 +59,12 @@ function minErr(module, ErrorConstructor) {
 
     message += '\nhttp://errors.angularjs.org/1.5.5/' +
       (module ? module + '/' : '') + code;
-
+       
     for (i = SKIP_INDEXES, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
       message += paramPrefix + 'p' + (i - SKIP_INDEXES) + '=' +
         encodeURIComponent(toDebugString(templateArgs[i]));
     }
-
+    console.warn(message);
     return new ErrorConstructor(message);
   };
 }
