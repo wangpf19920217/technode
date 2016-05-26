@@ -1,0 +1,31 @@
+{
+  "name": "technode",
+  "version": "1.0.0",
+  "description": "angular + bootstrp做的聊天室",
+  "main": "app",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wangpf19920217/technode.git"
+  },
+  "author": "node实战",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wangpf19920217/technode/issues"
+  },
+  "homepage": "https://github.com/wangpf19920217/technode#readme",
+  "dependencies": {
+    "angular": "^1.5.5",
+    "angular-route": "^1.5.5",
+    "body-parser": "^1.15.1",
+    "bootstrap": "^3.3.6",
+    "bower": "^1.7.9",
+    "express": "^4.13.4",
+    "gravatar": "^1.5.2",
+    "jquery": "^2.2.4",
+    "mongoose": "^4.4.19",
+    "socket.io": "^1.4.6"
+  }
+}
