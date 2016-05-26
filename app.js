@@ -41,3 +41,65 @@ io.sockets.on('connection', function (socket) {
 向服务端发送`createMessage`事件，服务端把消息存放到`messages`数组中，
 并向所有的客户端广播`messageAdded`，有新的消息添加进来。
  */
+
+/*
+在TechNode目录下新建controllers文件夹
+提供了两个接口，一是通过用户ID查找用户；二是通过邮箱地址查找用户
+exports.findUserById 
+exports.findByEmailOrCreate
+最后在app.js中将登录验证的接口暴露出来：
+ */
+var Controllers = require('./controllers')
+
+app.use(express.bodyParser());  // parser解析
+app.use(express.cookieParser());
+app.use(express.session({
+  secret: 'technode',
+  cookie:{
+    maxAge: 60 * 1000   //存贮周期
+  }
+}));
+
+
+app.get('/api/validate', function (req, res) {
+  _userId = req.session._userId;
+  if (_userId) {
+    Controllers.User.findUserById(_userId, function (err, user) {
+      if (err) {
+        res.json(401, {msg: err});
+      } else {
+        res.json(user);
+      }
+    })
+  } else {
+    res.json(401, null);
+  }
+})
+
+app.post('/api/login', function (req, res) {
+  email = req.body.email;
+  if (email) {      
+    Controllers.User.findByEmailOrCreate(email, function(err, user) {
+      if (err) {
+        res.json(500, {msg: err})
+      } else {
+        req.session._userId = user._id
+        res.json(user)
+      }
+    })
+  } else {
+    res.json(403)
+  }
+})
+
+app.get('/api/logout', function (req, res) {
+  req.session._userId = null;
+  res.json(401);
+});
+/*
+我们使用express提供的session模块来管理用户的认证，整个认证过程如下：
+- 客户端调用`api/validate`验证用户是否登录，服务端查看在会话（session）中是否包含用户ID，如果是则表示用户已经登录了，从数据库将用户信息读出来；发给客户端；
+- 如果会话中没有用户ID，即用户未登录，客户端调转到登录页面，则通过`api/login`接口登录，服务端根根据用户填写的邮箱地址到数据库中查找用户，如果查找不到就创建一个新用户，然后把用户ID保存在session中，返回用户信息给客户端，登录成功；
+- 还提供了一个`api/logout`接口，清除会话中的用户ID，用户成功登出；
+
+ */
