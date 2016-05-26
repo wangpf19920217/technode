@@ -1,7 +1,6 @@
 var express = require('express');
 var app = express();
 var port = process.env.PORT || 3000;
-
 app.use(express.static(__dirname + '/static'));
 
 app.use(function (req, res) {
@@ -34,7 +33,7 @@ io.sockets.on('connection', function (socket) {
     messages.push(message);
     io.sockets.emit('messageAdded', message);
   })
-})
+});
 /*
 我们暂时把消息数据放到`messages`这个数组对象中。
 用户连上来后，向服务端发送`getAllMessages`请求，获取所有消息，
