@@ -1,4 +1,5 @@
 var express = require('express');
+var bodyParder = require('body-parser');
 var app = express();
 var port = process.env.PORT || 3000;
 app.use(express.static(__dirname + '/static'));
@@ -49,7 +50,7 @@ exports.findUserById
 exports.findByEmailOrCreate
 最后在app.js中将登录验证的接口暴露出来：
  */
-var Controllers = require('./controllers')
+var Controllers = require('./controllers');
 
 app.use(express.bodyParser());  // parser解析
 app.use(express.cookieParser());
