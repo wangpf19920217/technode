@@ -37,6 +37,14 @@ angular.module('techNodeApp').controller('MessageCreatorCtrl', function($scope, 
 //然后通过`$location`组件跳转到`/`，即聊天室页面；如果用户未登录，则跳转到登录页。
 
 
+/*
+ run执行完判断是否是登陆状态后 /////
+登录验证API 
+我们使用MongoDB来存储用户信息，借助`mongoose`操作数据库。
+首先定义用于存储用户信息的Schema——User。在TechNode目录下新建models文件夹，加入user.js和index.js文件。
+
+ */
+
 
 
 
