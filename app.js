@@ -52,7 +52,7 @@ exports.findByEmailOrCreate
  */
 var Controllers = require('./controllers');
 
-app.use(express.bodyParser());  // parser解析
+app.use(express.bodyParder());  // parser解析
 app.use(express.cookieParser());
 app.use(express.session({
   secret: 'technode',
