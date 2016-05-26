@@ -4,7 +4,7 @@ var cheerio = require('cheerio');
 var app = express();
  
 app.get('/', function (req, res, next) {
-  superagent.get('www.baidu.com')
+  superagent.get('http://www.shencan.net/')
     .end(function (err, sres) {
       if (err) {
         return next(err);
