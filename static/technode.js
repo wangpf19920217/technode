@@ -1,49 +1,14 @@
 //在`static`目录下新建名为`technode.js`文件，并引入到`index.html`中
-angular.module('techNodeApp', []);
+angular.module('techNodeApp',['ngRoute']);
 
-//将socket.io封装成了一个名为`socket`的Angular的服务，这样我们就可以在其他组件中使用`socket`与服务端通信了：
 
-angular.module('techNodeApp').factory('socket', function($rootScope) {
-  var socket = io.connect('/');
-  return {
-    on: function(eventName, callback) {
-      socket.on(eventName, function() {
-        var args = arguments;
-        $rootScope.$apply(function() {
-          callback.apply(socket, args);
-        });
-      });
-    },
-    emit: function(eventName, data, callback) {
-      socket.emit(eventName, data, function() {
-        var args = arguments;
-        $rootScope.$apply(function() {
-          if (callback) {
-            callback.apply(socket, args);
-          }
-        })
-      })
-    }
-  }
-});
-//接下来是定义`RoomCtrl`：
 
-angular.module('techNodeApp').controller('RoomCtrl', function($scope, socket) {
-  $scope.messages = [];
-  socket.emit('getAllMessages');
-  socket.on('allMessage', function (messages) {
-    $scope.messages = messages; //$scope.messages = []`是这个控制器的数据模型；对应视图中的  某某{messages}
-  })
-  socket.on('messageAdded', function (message) {
-    $scope.messages.push(message);
-    //在techNode启动后，通过socket服务从服务端获取所有消息，更新到数据模型`messages`中。
-  })
-});
 /*
 MessageCteatorCtrl的定义也非常简单，当用户按下回车时，将消息通过socket发送给服务端；
 注意着了的newMessage是通过ng-model与textarea直接绑定的；
 下面是另一个控制器`MessageCteatorCtrl`：
  */
+//Angular提供了一个名为`Run Block`的启动模块，即当整个应用启动时第一个执行的块。于是我们把登录验证逻辑写在这里：
 angular.module('techNodeApp').controller('MessageCreatorCtrl', function($scope, socket) {
   $scope.newMessage = '';
   $scope.createMessage = function () {
@@ -56,51 +21,22 @@ angular.module('techNodeApp').controller('MessageCreatorCtrl', function($scope, 
         <textarea ng-model="newMessage" ctrl-enter-break-line="createMessage()"></textarea>`绑定。
     同时绑定了一个控制器方法`createMessage`，当用户回车时，调用这个方法，把新消息发送给服务端。 */
   }
+}).run(function ($window, $rootScope, $http, $location) {
+  $http({
+    url: '/api/validate',
+    method: 'GET'
+  }).success(function (user) {
+    $rootScope.me = user;
+    $location.path('/')
+  }).error(function (data) {
+    $location.path('/login')
+  })
 });
+//`$http`是Angular提供的一个Ajax组件，在应用启动时，通过Ajax调用服务端的验证接口`'/api/validate'`，获取用户的信息，
+//如果用户已登录，服务端返回用户信息，客户端把用户信息保存到全局作用域中`$rootScope.me`中，
+//然后通过`$location`组件跳转到`/`，即聊天室页面；如果用户未登录，则跳转到登录页。
 
-/*
-你一定注意到了视图上有两个奇怪的属性`ctrl-enter-break-line`和`auto-scroll-to-bottom`，这是我们自定义的两个Angular指令：
 
-- autoScrollToBottom：当消息很多出现滚动条时，该组件使得滚动条能随着消息的增加自动滚动到底部；
-- ctrlEnterBreakLine: 在textarea回车，默认会换行，使用这个组件，可以通过ctrl+enter来换行，而enter则触发绑定的行为，在这里就是createMessage这个方法。
- */
-angular.module('techNodeApp').directive('autoScrollToBottom', function() {
-  return {
-    link: function(scope, element, attrs) {
-      scope.$watch(
-        function() {
-          return element.children().length;
-        },
-        function() {
-          element.animate({
-            scrollTop: element.prop('scrollHeight')
-          }, 1000);
-        }
-      );
-    }
-  };
-});
 
-angular.module('techNodeApp').directive('ctrlEnterBreakLine', function() {
-  return function(scope, element, attrs) {
-    var ctrlDown = false;
-    element.bind("keydown", function(evt) {
-      if (evt.which === 17) {
-        ctrlDown = true;
-        setTimeout(function() {
-          ctrlDown = false;
-        }, 1000)
-      }
-      if (evt.which === 13) {
-        if (ctrlDown) {
-          element.val(element.val() + '\n')
-        } else {
-          scope.$apply(function() {
-            scope.$eval(attrs.ctrlEnterBreakLine);
-          });
-          evt.preventDefault();
-        }
-      }
-    });
-  };
-});
+
+
